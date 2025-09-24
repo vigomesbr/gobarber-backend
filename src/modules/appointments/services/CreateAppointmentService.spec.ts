@@ -4,10 +4,20 @@ import ListAppointmentsService from "./ListAppointmentsService";
 import AppError from '@shared/errors/AppError';
 
 describe('CreateAppointment', () => {
-    it('should be able to create a new appointment', async () => {
-        const appointmentsRepository = new FakeAppointmentsRepository();
-        const createAppointment = new CreateAppointmentService(appointmentsRepository);
 
+    let appointmentsRepository: FakeAppointmentsRepository;
+    let createAppointment: CreateAppointmentService;
+    let listAppointments: ListAppointmentsService;
+
+    beforeEach(() => {
+        appointmentsRepository = new FakeAppointmentsRepository();
+        createAppointment = new CreateAppointmentService(appointmentsRepository);
+        listAppointments = new ListAppointmentsService(appointmentsRepository);
+
+    });
+
+    it('should be able to create a new appointment', async () => {
+   
         const appointment = await createAppointment.execute({
             date: new Date(),
             provider_id: '123123123'
@@ -18,9 +28,7 @@ describe('CreateAppointment', () => {
     });
 
     it('should not able to create two appointments on the same time', async () => {
-        const appointmentsRepository = new FakeAppointmentsRepository();
-        const createAppointment = new CreateAppointmentService(appointmentsRepository);
-
+        
         const appointmentDate = new Date();
 
         await createAppointment.execute({
@@ -37,10 +45,6 @@ describe('CreateAppointment', () => {
     });
 
     it('should be able to list the appointments for a specific provider', async () => {
-
-        const appointmentsRepository = new FakeAppointmentsRepository();
-        const createAppointment = new CreateAppointmentService(appointmentsRepository);
-        const listAppointments = new ListAppointmentsService(appointmentsRepository);
 
         const appointment1 = await createAppointment.execute({
             provider_id: 'provider-1',
