@@ -20,6 +20,7 @@ describe('CreateAppointment', () => {
    
         const appointment = await createAppointment.execute({
             date: new Date(),
+            user_id: '123123',
             provider_id: '123123123'
         })
 
@@ -33,12 +34,14 @@ describe('CreateAppointment', () => {
 
         await createAppointment.execute({
             date: appointmentDate,
+            user_id: '123123',
             provider_id: '123123123'
         })
 
         await expect(
             createAppointment.execute({
                 date: appointmentDate,
+                user_id: '123123',
                 provider_id: '123123123'
             })
         ).rejects.toBeInstanceOf(AppError);
@@ -48,16 +51,19 @@ describe('CreateAppointment', () => {
 
         const appointment1 = await createAppointment.execute({
             provider_id: 'provider-1',
+            user_id: '123123',
             date: new Date(2025, 10, 20, 14, 0, 0),
         });
 
         const appointment2 = await createAppointment.execute({
             provider_id: 'provider-1',
+            user_id: '123123',
             date: new Date(2025, 10, 20, 15, 0, 0),
         });
         
         await createAppointment.execute({
             provider_id: 'provider-2',
+            user_id: '123123',
             date: new Date(2025, 10, 21, 10, 0, 0), 
         });
 
