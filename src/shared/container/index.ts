@@ -12,6 +12,9 @@ import usersRepository from "@modules/users/infra/typeorm/repositories/UsersRepo
 import IUserTokenRepository from "@modules/users/repositories/IUserTokenRepository";
 import userTokensRepository from "@modules/users/infra/typeorm/repositories/UserTokensRepository";
 
+import INotificationsRepository from "@modules/notifications/repositories/INotificationsRepository";
+import notificationsRepository from "@modules/notifications/infra/typeorm/repositories/NotificationsRepository";
+
 container.register<IAppointmentsRepository>(
     'AppointmentsRepository',
     {
@@ -30,5 +33,12 @@ container.register<IUserTokenRepository>(
     'UserTokenRepository',
     {
         useValue: userTokensRepository 
+    }
+);
+
+container.register<INotificationsRepository>(
+    'NotificationsRepository',
+    {
+        useValue: notificationsRepository 
     }
 );

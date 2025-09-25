@@ -5,7 +5,7 @@ import cors from 'cors';
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
 import routes from './routes';
-import { AppDataSource } from '../typeorm/data-source';
+import { initializeDatabases } from '../typeorm';
 
 // Importa e executa o registro de todas as dependências síncronas
 import '@shared/container';
@@ -35,10 +35,8 @@ app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
 });
 
 // Inicializa a conexão com o banco e inicia o servidor
-AppDataSource.initialize()
+initializeDatabases()
   .then(() => {
-    console.log('📦 Banco de dados conectado!');
-
     app.listen(3333, () => {
       console.log('🚀 Server started on port 3333!');
     });

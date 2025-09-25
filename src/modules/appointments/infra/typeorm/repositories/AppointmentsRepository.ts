@@ -1,6 +1,6 @@
 import { Repository, Raw } from 'typeorm';
 import Appointment from '../entities/Appointment';
-import { AppDataSource } from '@shared/infra/typeorm/data-source';
+import { PostgresDataSource } from '@shared/infra/typeorm';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmensRepository';
 import IFindAllInMounthProviderDTO from '@modules/appointments/dtos/IFindAllInMounthProviderDTO';
@@ -57,6 +57,6 @@ const customMethods = {
 };
 
 const appointmentsRepository: Repository<Appointment> & IAppointmentsRepository =
-  AppDataSource.getRepository(Appointment).extend(customMethods);
+  PostgresDataSource.getRepository(Appointment).extend(customMethods);
 
 export default appointmentsRepository;

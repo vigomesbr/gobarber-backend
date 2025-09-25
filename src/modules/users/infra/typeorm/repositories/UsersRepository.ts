@@ -1,6 +1,6 @@
 import { Repository, Not } from 'typeorm';
 import User from '../entities/User';
-import { AppDataSource } from '@shared/infra/typeorm/data-source';
+import { PostgresDataSource } from '@shared/infra/typeorm';
 import ICreateUsertDTO from '@modules/users/dtos/ICreateUserDTO';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IFindAllProvidersDTO from '@modules/users/dtos/IFindAllProvidersDTO';
@@ -48,6 +48,6 @@ const customMethods = {
 };
 
 const usersRepository: Repository<User> & IUsersRepository  =
-  AppDataSource.getRepository(User).extend(customMethods);
+  PostgresDataSource.getRepository(User).extend(customMethods);
 
 export default usersRepository;

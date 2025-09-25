@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import UserToken from '../entities/UserToken';
-import { AppDataSource } from '@shared/infra/typeorm/data-source';
+import { PostgresDataSource } from '@shared/infra/typeorm';
 import IUserTokenRepository from '@modules/users/repositories/IUserTokenRepository';
 
 const customMethods = {
@@ -28,6 +28,6 @@ const customMethods = {
 };
 
 const userTokensRepository: Repository<UserToken> & IUserTokenRepository =
-  AppDataSource.getRepository(UserToken).extend(customMethods);
+  PostgresDataSource.getRepository(UserToken).extend(customMethods);
 
 export default userTokensRepository;
