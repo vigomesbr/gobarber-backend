@@ -3,7 +3,6 @@ import Appointment from '../entities/Appointment';
 import { AppDataSource } from '@shared/infra/typeorm/data-source';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmensRepository';
-import IFindAllByProviderDTO from '@modules/appointments/dtos/IFindAllByProviderDTO';
 import IFindAllInMounthProviderDTO from '@modules/appointments/dtos/IFindAllInMounthProviderDTO';
 import IFindAllInDayProviderDTO from '@modules/appointments/dtos/IFindAllInDayProviderDTO';
 
@@ -55,15 +54,6 @@ const customMethods = {
     return appointment;
   },
 
-  async findAllByProvider(this: Repository<Appointment>, { provider_id }: IFindAllByProviderDTO): Promise<Appointment[]> {
-    const appointments = this.find({
-      where: {
-        provider_id,
-      },
-    });
-
-    return appointments;
-  },
 };
 
 const appointmentsRepository: Repository<Appointment> & IAppointmentsRepository =

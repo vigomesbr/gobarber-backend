@@ -3,7 +3,6 @@ import { isEqual, getMonth, getYear, getDate } from 'date-fns';
 
 import IAppointmentsRepository from '../IAppointmensRepository';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
-import IFindAllByProviderDTO from '@modules/appointments/dtos/IFindAllByProviderDTO';
 import Appointment from '../../infra/typeorm/entities/Appointment';
 import IFindAllInMounthProviderDTO from '@modules/appointments/dtos/IFindAllInMounthProviderDTO';
 import IFindAllInDayProviderDTO from '@modules/appointments/dtos/IFindAllInDayProviderDTO';
@@ -38,13 +37,6 @@ class FakeAppointmentsRepository implements IAppointmentsRepository {
     );
 
     return findAppointment || null;
-  }
-
-  public async findAllByProvider({ provider_id }: IFindAllByProviderDTO): Promise<Appointment[]> {
-    const appointments = this.appointments.filter(
-      appointment => appointment.provider_id === provider_id,
-    );
-    return appointments;
   }
 
   public async create(data: ICreateAppointmentDTO): Promise<Appointment> {
