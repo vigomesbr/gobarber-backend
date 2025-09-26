@@ -2,12 +2,16 @@ import {Request, Response } from 'express';
 import { container } from 'tsyringe';
 import ListProviderDayAvailabilityService from '@modules/appointments/services/ListProviderDayAvailabilityService';
 import AppError from '@shared/errors/AppError';
+import {
+  ProviderDayAvailabilityParams,
+  ProviderDayAvailabilityBody,
+} from '../validators/providers.validators';
 
 export default class ProviderDayAvailabilityController {
     public async index(request: Request, response: Response): Promise<Response> {
 
-        const { provider_id } = request.params;        
-        const { month, year, day } = request.body;
+        const { provider_id } = request.params as ProviderDayAvailabilityParams;        
+        const { month, year, day } = request.body as ProviderDayAvailabilityBody;
         const listProviderDayAvailability = container.resolve(ListProviderDayAvailabilityService);
         
         if (!provider_id) {

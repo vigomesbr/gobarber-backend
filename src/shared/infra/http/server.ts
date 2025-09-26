@@ -6,6 +6,7 @@ import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
 import routes from './routes';
 import { initializeDatabases } from '../typeorm';
+import { ZodError } from 'zod'; 
 
 // Importa e executa o registro de todas as dependências síncronas
 import '@shared/container';
@@ -19,6 +20,14 @@ app.use(routes);
 
 // Middleware de tratamento de erros global
 app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
+  if (err instanceof ZodError) {
+    return response.status(400).json({
+      status: 'error',
+      message: 'Validation failed.',
+      issues: err.flatten().fieldErrors,
+    });
+  }
+  
   if (err instanceof AppError) {
     return response.status(err.statusCode).json({
       status: 'error',

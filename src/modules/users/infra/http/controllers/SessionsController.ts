@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import AuthenticateUserService from '@modules/users/services/AuthenticateUserService';
 import { container } from 'tsyringe';
+import { SessionsBody } from '../validators/sessions.validators';
 
 export default class SessionController {
     public async create(request: Request, response: Response): Promise<Response> {
-        const { email, password } = request.body;
+        const { email, password } = request.body as SessionsBody;
 
         const authenticateUser = container.resolve(AuthenticateUserService);
 

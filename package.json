@@ -27,7 +27,8 @@
     "tsyringe": "^4.10.0",
     "typeorm": "^0.3.26",
     "uuid": "^11.1.0",
-    "uuidv4": "^6.2.13"
+    "uuidv4": "^6.2.13",
+    "zod": "^4.1.11"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
