@@ -1,15 +1,15 @@
 import 'reflect-metadata';
+import dotenv from 'dotenv';
+dotenv.config(); 
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
 import routes from './routes';
 import { initializeDatabases } from '../typeorm';
 import { ZodError } from 'zod'; 
-
-// Importa e executa o registro de todas as dependências síncronas
 import '@shared/container';
+
 
 const app = express();
 

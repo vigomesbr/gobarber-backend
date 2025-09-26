@@ -1,53 +1,48 @@
 import { Repository, Not } from 'typeorm';
 import User from '../entities/User';
 import { PostgresDataSource } from '@shared/infra/typeorm';
-import ICreateUsertDTO from '@modules/users/dtos/ICreateUserDTO';
+import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IFindAllProvidersDTO from '@modules/users/dtos/IFindAllProvidersDTO';
 
-const customMethods = {
+// A classe agora implementa a interface (o "contrato")
+class UsersRepository implements IUsersRepository {
+  private ormRepository: Repository<User>;
 
-  async findAllProviders(this: Repository<User>, { except_user_id }: IFindAllProvidersDTO): Promise<User[]> {
-      let users: User[];
+  constructor() {
+    // O construtor pega a instância do repositório do DataSource
+    this.ormRepository = PostgresDataSource.getRepository(User);
+  }
 
-      if (except_user_id) {
-        users = await this.find({
-          where: {
-            id: Not(except_user_id)
-          }
-        })
-      } else {
-        users = await this.find()
-      }
-
-      return users;
-  },
-
-  async findById(this: Repository<User>, id: string): Promise<User | null> {
-    
-    const user = await this.findOne({ 
-    where: { id } 
-    });
-
+  // Cada método público agora usa o 'this.ormRepository' para acessar os métodos do TypeORM
+  public async findById(id: string): Promise<User | null> {
+    const user = await this.ormRepository.findOneBy({ id });
     return user;
-  },
-  
-  async findByEmail(this: Repository<User>, email: string): Promise<User | null> {
-    const user = await this.findOne({
-        where: { email }
-    });
+  }
 
-    return user;    
-  },
-
-  async create(this: Repository<User>, data: ICreateUsertDTO): Promise<User> {
-    const user = await this.save(data); 
+  public async findByEmail(email: string): Promise<User | null> {
+    const user = await this.ormRepository.findOneBy({ email });
     return user;
-  },
+  }
 
-};
+  public async findAllProviders({ except_user_id }: IFindAllProvidersDTO): Promise<User[]> {
+    if (except_user_id) {
+      return this.ormRepository.find({
+        where: { id: Not(except_user_id) },
+      });
+    }
+    return this.ormRepository.find();
+  }
 
-const usersRepository: Repository<User> & IUsersRepository  =
-  PostgresDataSource.getRepository(User).extend(customMethods);
+  public async create(data: ICreateUserDTO): Promise<User> {
+    const user = this.ormRepository.create(data);
+    await this.ormRepository.save(user);
+    return user;
+  }
 
-export default usersRepository;
+  public async save(user: User): Promise<User> {
+    return this.ormRepository.save(user);
+  }
+}
+
+export default UsersRepository;

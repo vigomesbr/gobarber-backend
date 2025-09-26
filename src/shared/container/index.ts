@@ -4,41 +4,33 @@ import '@modules/users/providers';
 import './providers'
 
 import IAppointmentsRepository from "@modules/appointments/repositories/IAppointmensRepository";
-import appointmentsRepository from "@modules/appointments/infra/typeorm/repositories/AppointmentsRepository";
+import AppointmentsRepository from "@modules/appointments/infra/typeorm/repositories/AppointmentsRepository";
 
 import IUsersRepository from "@modules/users/repositories/IUsersRepository";
-import usersRepository from "@modules/users/infra/typeorm/repositories/UsersRepository";
+import UsersRepository from "@modules/users/infra/typeorm/repositories/UsersRepository";
 
 import IUserTokenRepository from "@modules/users/repositories/IUserTokenRepository";
-import userTokensRepository from "@modules/users/infra/typeorm/repositories/UserTokensRepository";
+import UserTokenRepository from "@modules/users/infra/typeorm/repositories/UserTokensRepository";
 
 import INotificationsRepository from "@modules/notifications/repositories/INotificationsRepository";
-import notificationsRepository from "@modules/notifications/infra/typeorm/repositories/NotificationsRepository";
+import NotificationsRepository from "@modules/notifications/infra/typeorm/repositories/NotificationsRepository";
 
-container.register<IAppointmentsRepository>(
-    'AppointmentsRepository',
-    {
-        useValue: appointmentsRepository 
-    }
+container.registerSingleton<IAppointmentsRepository>(
+  'AppointmentsRepository',
+  AppointmentsRepository,
 );
 
-container.register<IUsersRepository>(
-    'UsersRepository',
-    {
-        useValue: usersRepository 
-    }
+container.registerSingleton<IUsersRepository>(
+  'UsersRepository',
+  UsersRepository,
 );
 
-container.register<IUserTokenRepository>(
-    'UserTokenRepository',
-    {
-        useValue: userTokensRepository 
-    }
+container.registerSingleton<IUserTokenRepository>(
+  'UserTokensRepository',
+  UserTokenRepository,
 );
 
-container.register<INotificationsRepository>(
-    'NotificationsRepository',
-    {
-        useValue: notificationsRepository 
-    }
+container.registerSingleton<INotificationsRepository>(
+  'NotificationsRepository',
+  NotificationsRepository,
 );

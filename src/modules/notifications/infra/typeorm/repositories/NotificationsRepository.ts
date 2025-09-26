@@ -1,24 +1,30 @@
-import INotificationsRepository from "@modules/notifications/repositories/INotificationsRepository";
-import Notification from "../schemas/Notification";
-import { MongoDataSource } from "@shared/infra/typeorm";
-import { MongoRepository } from "typeorm";
-import ICreateNotificationDTO from "@modules/notifications/dtos/ICreateNotificationDTO";
+import { MongoRepository } from 'typeorm';
+import Notification from '../schemas/Notification';
+import { MongoDataSource } from '@shared/infra/typeorm';
+import ICreateNotificationDTO from '@modules/notifications/dtos/ICreateNotificationDTO';
+import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 
-const customMethods = {
+class NotificationsRepository implements INotificationsRepository {
+  private ormRepository: MongoRepository<Notification>;
 
-    async create(this: MongoRepository<Notification>, { content, recipient_id }: ICreateNotificationDTO): Promise<Notification> {
-        const notification = this.save({
-            content,
-            recipient_id,
-        });
+  constructor() {
+    // O construtor pega a instância do repositório especializado para MongoDB
+    this.ormRepository = MongoDataSource.getMongoRepository(Notification);
+  }
 
-        return notification;
+  public async create({
+    content,
+    recipient_id,
+  }: ICreateNotificationDTO): Promise<Notification> {
+    const notification = this.ormRepository.create({
+      content,
+      recipient_id,
+    });
 
-    },
+    await this.ormRepository.save(notification);
 
-};
+    return notification;
+  }
+}
 
-const notificationsRepository: MongoRepository<Notification> & INotificationsRepository =
-  MongoDataSource.getMongoRepository(Notification).extend(customMethods);
-
-export default notificationsRepository;
+export default NotificationsRepository;

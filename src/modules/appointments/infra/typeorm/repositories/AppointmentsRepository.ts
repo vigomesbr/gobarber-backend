@@ -6,57 +6,57 @@ import IAppointmentsRepository from '@modules/appointments/repositories/IAppoint
 import IFindAllInMounthProviderDTO from '@modules/appointments/dtos/IFindAllInMounthProviderDTO';
 import IFindAllInDayProviderDTO from '@modules/appointments/dtos/IFindAllInDayProviderDTO';
 
-const customMethods = {
+class AppointmentsRepository implements IAppointmentsRepository {
+  private ormRepository: Repository<Appointment>;
 
-  async findAllInDayFromProvider(this: Repository<Appointment>, {provider_id, month, year, day}: IFindAllInDayProviderDTO): Promise<Appointment[]> {
+  constructor() {
+    this.ormRepository = PostgresDataSource.getRepository(Appointment);
+  }
+
+  public async findByDate(date: Date): Promise<Appointment | null> {
+    const findAppointment = await this.ormRepository.findOneBy({ date });
+    return findAppointment;
+  }
+
+  public async create(data: ICreateAppointmentDTO): Promise<Appointment> {
+    const appointment = this.ormRepository.create(data);
+    await this.ormRepository.save(appointment);
+    return appointment;
+  }
+
+  public async findAllInMonthFromProvider({
+    provider_id,
+    month,
+    year,
+  }: IFindAllInMounthProviderDTO): Promise<Appointment[]> {
     const parsedMonth = String(month).padStart(2, '0');
-    const parsedDay = String(day).padStart(2, '0');
 
-    const appointments = await this.find({
-      where: { 
-        provider_id,
-        date: Raw(dateFieldname => 
-          `to_char(${dateFieldname}, 'DD-MM-YYYY') = '${parsedDay}-${parsedMonth}-${year}'`
-        )
-      }
-    })
-
-    return appointments;
-  },
-
-  async findAllInMounthProvider(this: Repository<Appointment>, {provider_id, month, year}: IFindAllInMounthProviderDTO): Promise<Appointment[]> {
-    const parsedMonth = String(month).padStart(2, '0');
-    
-    const appointments = await this.find({
-      where: { 
-        provider_id,
-        date: Raw(dateFieldname => 
-          `to_char(${dateFieldname}, 'MM-YYYY') = '${parsedMonth}-${year}'`
-        )
-      }
-    })
-
-    return appointments;
-  },
-
-  async findByDate(this: Repository<Appointment>, date: Date): Promise<Appointment | null> {
-    const findAppointment = await this.findOne({
+    const appointments = await this.ormRepository.find({
       where: {
-        date,
+        provider_id,
+        date: Raw(dateFieldName => `to_char(${dateFieldName}, 'MM-YYYY') = '${parsedMonth}-${year}'`),
       },
     });
+    return appointments;
+  }
 
-    return findAppointment;
-  },
+  public async findAllInDayFromProvider({
+    provider_id,
+    day,
+    month,
+    year,
+  }: IFindAllInDayProviderDTO): Promise<Appointment[]> {
+    const parsedDay = String(day).padStart(2, '0');
+    const parsedMonth = String(month).padStart(2, '0');
 
-  async create(this: Repository<Appointment>, data: ICreateAppointmentDTO): Promise<Appointment> {
-    const appointment = await this.save(data); // Salva no banco de dados
-    return appointment;
-  },
+    const appointments = await this.ormRepository.find({
+      where: {
+        provider_id,
+        date: Raw(dateFieldName => `to_char(${dateFieldName}, 'DD-MM-YYYY') = '${parsedDay}-${parsedMonth}-${year}'`),
+      },
+    });
+    return appointments;
+  }
+}
 
-};
-
-const appointmentsRepository: Repository<Appointment> & IAppointmentsRepository =
-  PostgresDataSource.getRepository(Appointment).extend(customMethods);
-
-export default appointmentsRepository;
+export default AppointmentsRepository;
