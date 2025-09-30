@@ -1,4 +1,3 @@
-import User from '../infra/typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
 import IUsersRepository from '../repositories/IUsersRepository';
 import { injectable, inject } from 'tsyringe';
@@ -31,7 +30,7 @@ class SendForgotPasswordService {
             throw new AppError('The user not exists')
         }
 
-        const { token } = await this.tokenRepository.generete(user.id)
+        const { token } = await this.tokenRepository.generate(user.id)
         
         const forgotPasswordTemplate = path.resolve(
             __dirname,

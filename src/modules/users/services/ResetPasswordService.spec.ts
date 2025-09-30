@@ -45,7 +45,7 @@ describe('SendForgotPassword', () => {
 
     it('should generete a forgot password token', async () => {
 
-        const genereteToken = jest.spyOn(userTokenRepository, 'generete')
+        const genereteToken = jest.spyOn(userTokenRepository, 'generate')
 
 
         const user = await usersRepository.create({

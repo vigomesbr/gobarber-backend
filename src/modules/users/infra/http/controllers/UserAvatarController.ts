@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarService';
-
+import { userResponseSchema } from '../validators/users.validators';
 
 export default class UserAvatarController {
     public async update(request: Request, response: Response): Promise<Response> {
@@ -16,9 +16,10 @@ export default class UserAvatarController {
             avatarFileName: request.file.filename
         })
 
-        const { password: _, ...userResponse } = user;
-
-        return response.json(userResponse);
+        const userResponse = userResponseSchema.parse(user);
+        
+        return response.json({ user: userResponse });
+        
 
     }
 }

@@ -5,6 +5,7 @@ import multer from 'multer';
 const tmpFolder = path.resolve(__dirname,'..', '..', 'tmp');
 
 export default {
+    driver: process.env.UPLOAD_DRIVER,
     tmpFolder: tmpFolder,
     uploadFolder: path.resolve(tmpFolder, 'uploads'),
     storage: multer.diskStorage({

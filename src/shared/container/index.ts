@@ -15,6 +15,8 @@ import UserTokenRepository from "@modules/users/infra/typeorm/repositories/UserT
 import INotificationsRepository from "@modules/notifications/repositories/INotificationsRepository";
 import NotificationsRepository from "@modules/notifications/infra/typeorm/repositories/NotificationsRepository";
 
+import redisClient from '@shared/infra/redis';
+
 container.registerSingleton<IAppointmentsRepository>(
   'AppointmentsRepository',
   AppointmentsRepository,
@@ -26,7 +28,7 @@ container.registerSingleton<IUsersRepository>(
 );
 
 container.registerSingleton<IUserTokenRepository>(
-  'UserTokensRepository',
+  'UserTokenRepository',
   UserTokenRepository,
 );
 
@@ -34,3 +36,7 @@ container.registerSingleton<INotificationsRepository>(
   'NotificationsRepository',
   NotificationsRepository,
 );
+
+container.register('RedisClient', {
+  useValue: redisClient,
+});

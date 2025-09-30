@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 import UpdateProfileService from '@modules/users/services/UpdateProfileService';
 import ShowProfileService from '@modules/users/services/ShowProfileService';
 import { UpdateProfileBody } from '../validators/profile.validators';
+import { userResponseSchema } from '../validators/users.validators';
 
 export default class ProfileControllerController {
     public async update(request: Request, response: Response): Promise<Response> {
@@ -19,9 +20,9 @@ export default class ProfileControllerController {
             password
         })
 
-        const { password: _, ...userResponse } = user;
+        const userResponse = userResponseSchema.parse(user);
 
-        return response.json(userResponse);
+        return response.json({ user: userResponse });
 
     }
 
@@ -29,9 +30,10 @@ export default class ProfileControllerController {
         const showProfile = container.resolve(ShowProfileService);
 
         const user = await showProfile.execute({user_id: request.user.id})
-        const { password: _, ...userResponse } = user;
 
-        return response.json(userResponse);
+        const userResponse = userResponseSchema.parse(user);
+
+        return response.json({ user: userResponse });
 
     }
 

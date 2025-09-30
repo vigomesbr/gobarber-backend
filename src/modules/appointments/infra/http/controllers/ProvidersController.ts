@@ -1,6 +1,7 @@
 import {Request, Response } from 'express';
 import { container } from 'tsyringe';
 import ListProvidersService from '@modules/appointments/services/ListProvidersService';
+import { usersListResponseSchema } from '@modules/users/infra/http/validators/users.validators';
 
 export default class ProvidersController {
     public async index(request: Request, response: Response): Promise<Response> {
@@ -11,8 +12,9 @@ export default class ProvidersController {
             user_id: request.user.id
         });
 
+        const safeProviders = usersListResponseSchema.parse(providers);
 
-        return response.json(providers);
+        return response.json(safeProviders);
     }
     
 }

@@ -26,7 +26,7 @@ describe('SendForgotPassword', () => {
             password: '123456'
         })
 
-        const userToken = await userTokenRepository.generete(user.id)
+        const userToken = await userTokenRepository.generate(user.id)
         const genereteHash = jest.spyOn(hashProvider, 'generateHash')
 
 
@@ -53,7 +53,7 @@ describe('SendForgotPassword', () => {
 
     it('should not be able to reset password with non-exists user', async () => {
 
-        const { token } = await userTokenRepository.generete('non-exists-user');
+        const { token } = await userTokenRepository.generate('non-exists-user');
 
         await expect(
             resetPassword.execute({
@@ -71,7 +71,7 @@ describe('SendForgotPassword', () => {
             password: '123456'
         })
 
-        const userToken = await userTokenRepository.generete(user.id)
+        const userToken = await userTokenRepository.generate(user.id)
 
         jest.spyOn(Date, 'now').mockImplementationOnce(() => {
             const customDate = new Date();
