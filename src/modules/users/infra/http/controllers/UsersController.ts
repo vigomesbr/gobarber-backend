@@ -6,7 +6,7 @@ import { userResponseSchema } from '../validators/users.validators';
 
 export default class UsersController {
     public async create(request: Request, response: Response): Promise<Response> {
-       const { name, email, password } = request.body as CreateUserBody;
+       const { name, email, password } = response.locals.validated.body as CreateUserBody;
 
         const createUser = container.resolve(CreateUserService);
 

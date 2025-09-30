@@ -3,5 +3,15 @@ declare namespace Express {
         user: {
             id: string;
         }
+    };
+
+    export interface Response {
+        locals: {
+            validated: {
+                body?: any;
+                query?: any;
+                params?: any;
+            };
+        };
     }
 }

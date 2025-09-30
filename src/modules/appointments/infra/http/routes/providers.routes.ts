@@ -6,9 +6,9 @@ import ProviderDayAvailabilityController from '../controllers/ProviderDayAvailab
 import { validateRequest } from '@shared/infra/http/middlewares/validateRequest';
 import { 
     providerMonthAvailabilityParamsSchema, 
-    providerMonthAvailabilityBodySchema,
+    providerMonthAvailabilityQuerySchema,
     providerDayAvailabilityParamsSchema, 
-    providerDayAvailabilityBodySchema  
+    providerDayAvailabilityQuerySchema  
 } from '../validators/providers.validators';
 
 const providersRouter = Router();
@@ -24,7 +24,7 @@ providersRouter.get(
     '/:provider_id/month-availability', 
     validateRequest({ 
         params: providerMonthAvailabilityParamsSchema, 
-        body: providerMonthAvailabilityBodySchema
+        query: providerMonthAvailabilityQuerySchema
     }),
     providerMonthAvailabilityController.index);
 
@@ -32,7 +32,7 @@ providersRouter.get(
     '/:provider_id/day-availability', 
     validateRequest({ 
         params: providerDayAvailabilityParamsSchema, 
-        body: providerDayAvailabilityBodySchema
+        query: providerDayAvailabilityQuerySchema
     }),
     providerDayAvailabilityController.index);
 

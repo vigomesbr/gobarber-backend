@@ -18,13 +18,12 @@ export const createAppointmentBodySchema = z.object({
 
 export type CreateAppointmentBody = z.infer<typeof createAppointmentBodySchema>;
 
-export const listProviderAppointmentsBodySchema = z.object({
-  // z.coerce.number() transforma a string ou número do JSON em um número
+export const listProviderAppointmentsQuerySchema = z.object({
   day: z.coerce.number().int().min(1).max(31),
   month: z.coerce.number().int().min(1).max(12),
-  year: z.coerce.number().int().min(2000), // Garante que o ano seja razoável
+  year: z.coerce.number().int().min(2000),
 });
 
-export type ListProviderAppointmentsBody = z.infer<
-  typeof listProviderAppointmentsBodySchema
+export type ListProviderAppointmentsQuery = z.infer<
+  typeof listProviderAppointmentsQuerySchema
 >;

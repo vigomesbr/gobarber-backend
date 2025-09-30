@@ -6,7 +6,7 @@ import { userResponseSchema } from '../validators/users.validators';
 
 export default class SessionController {
     public async create(request: Request, response: Response): Promise<Response> {
-        const { email, password } = request.body as SessionsBody;
+        const { email, password } = response.locals.validated.body as SessionsBody;
 
         const authenticateUser = container.resolve(AuthenticateUserService);
 

@@ -3,7 +3,7 @@ import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAut
 import AppointmentsController from '../controllers/AppointmentsController';
 import ProviderAppointmentsController from '../controllers/ProviderAppointmentsController';
 import { validateRequest } from '@shared/infra/http/middlewares/validateRequest';
-import { createAppointmentBodySchema, listProviderAppointmentsBodySchema } from '../validators/appointments.validators';
+import { createAppointmentBodySchema, listProviderAppointmentsQuerySchema } from '../validators/appointments.validators';
 
 
 const appointmentsRouter = Router();
@@ -14,7 +14,7 @@ const providerAppointmentsController = new ProviderAppointmentsController();
 appointmentsRouter.use(ensureAuthenticated);
 
 appointmentsRouter.get('/me', 
-    validateRequest({ body: listProviderAppointmentsBodySchema }),
+    validateRequest({ query: listProviderAppointmentsQuerySchema }),
     providerAppointmentsController.index);
 
 appointmentsRouter.post(

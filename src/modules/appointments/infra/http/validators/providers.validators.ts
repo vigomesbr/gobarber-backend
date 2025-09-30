@@ -6,7 +6,7 @@ export const providerMonthAvailabilityParamsSchema = z.object({
   provider_id: z.string().uuid('Invalid provider ID format.'),
 });
 
-export const providerMonthAvailabilityBodySchema = z.object({
+export const providerMonthAvailabilityQuerySchema = z.object({
   month: z.coerce.number().int().min(1).max(12),
   year: z.coerce.number().int().min(2000),
 });
@@ -14,8 +14,8 @@ export const providerMonthAvailabilityBodySchema = z.object({
 export type ProviderMonthAvailabilityParams = z.infer<
   typeof providerMonthAvailabilityParamsSchema
 >;
-export type ProviderMonthAvailabilityBody = z.infer<
-  typeof providerMonthAvailabilityBodySchema
+export type ProviderMonthAvailabilityQuery = z.infer<
+  typeof providerMonthAvailabilityQuerySchema
 >;
 
 
@@ -25,7 +25,7 @@ export const providerDayAvailabilityParamsSchema = z.object({
   provider_id: z.string().uuid('Invalid provider ID format.'),
 });
 
-export const providerDayAvailabilityBodySchema = z.object({
+export const providerDayAvailabilityQuerySchema = z.object({
   month: z.coerce.number().int().min(1).max(12),
   year: z.coerce.number().int().min(2000),
   day: z.coerce.number().int().min(1).max(31),
@@ -34,7 +34,7 @@ export const providerDayAvailabilityBodySchema = z.object({
 export type ProviderDayAvailabilityParams = z.infer<
   typeof providerDayAvailabilityParamsSchema
 >;
-export type ProviderDayAvailabilityBody = z.infer<
-  typeof providerDayAvailabilityBodySchema
+export type ProviderDayAvailabilityQuery = z.infer<
+  typeof providerDayAvailabilityQuerySchema
 >;
 

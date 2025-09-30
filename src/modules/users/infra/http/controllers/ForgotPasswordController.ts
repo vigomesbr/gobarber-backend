@@ -5,7 +5,7 @@ import { ForgotPasswordBody } from '../validators/password.validators';
 
 export default class ForgotPasswordController {
     public async create(request: Request, response: Response): Promise<Response> {
-        const { email } = request.body as ForgotPasswordBody;
+        const { email } = response.locals.validated.body as ForgotPasswordBody;
 
         const sendForgotPassword = container.resolve(SendForgotPasswordService);
 

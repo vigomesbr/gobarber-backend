@@ -5,7 +5,7 @@ import { ResetPasswordBody } from '../validators/password.validators';
 
 export default class ResetPasswordController {
     public async create(request: Request, response: Response): Promise<Response> {
-        const { token, password } = request.body as ResetPasswordBody;
+        const { token, password } = response.locals.validated.body as ResetPasswordBody;
 
         const resetPasswordService = container.resolve(ResetPasswordService);
 

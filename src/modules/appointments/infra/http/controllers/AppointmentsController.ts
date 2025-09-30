@@ -5,7 +5,7 @@ import { CreateAppointmentBody } from '../validators/appointments.validators';
 
 export default class AppointmentsController {
     public async create(request: Request, response: Response): Promise<Response> {
-        const { provider_id, date } = request.body as CreateAppointmentBody;
+        const { provider_id, date } = response.locals.validated.body as CreateAppointmentBody;
         
         const createAppointment = container.resolve(CreateAppointmentService);
         

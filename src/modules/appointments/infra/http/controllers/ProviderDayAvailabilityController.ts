@@ -4,14 +4,14 @@ import ListProviderDayAvailabilityService from '@modules/appointments/services/L
 import AppError from '@shared/errors/AppError';
 import {
   ProviderDayAvailabilityParams,
-  ProviderDayAvailabilityBody,
+  ProviderDayAvailabilityQuery,
 } from '../validators/providers.validators';
 
 export default class ProviderDayAvailabilityController {
     public async index(request: Request, response: Response): Promise<Response> {
 
-        const { provider_id } = request.params as ProviderDayAvailabilityParams;        
-        const { month, year, day } = request.body as ProviderDayAvailabilityBody;
+        const { provider_id } = response.locals.validated.params as ProviderDayAvailabilityParams;
+        const { month, year, day } =  response.locals.validated.query as ProviderDayAvailabilityQuery;
         const listProviderDayAvailability = container.resolve(ListProviderDayAvailabilityService);
         
         if (!provider_id) {
