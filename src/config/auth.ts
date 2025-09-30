@@ -3,4 +3,4 @@ export default {
         secret: process.env.APP_SECRET,
         expiresIn: '1d',
     },
-} as const;
+} as const; 
