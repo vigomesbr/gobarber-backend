@@ -1,24 +1,27 @@
-import {Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import ListProvidersAppointmentsService from '@modules/appointments/services/ListProvidersAppointmentsService';
 import { ListProviderAppointmentsQuery } from '../validators/appointments.validators';
+import { appointmentsListResponseSchema } from '../validators/appointments.validators';
 
 export default class ProviderAppointmentsController {
     public async index(request: Request, response: Response): Promise<Response> {
-        
+
         const { month, day, year } = response.locals.validated.query as ListProviderAppointmentsQuery;
-        
+
         const listProvidersAppointments = container.resolve(ListProvidersAppointmentsService);
-        
+
         const appointments = await listProvidersAppointments.execute({
-            provider_id: request.user.id, 
-            month, 
-            day, 
+            provider_id: request.user.id,
+            month,
+            day,
             year
         });
 
-        return response.json(appointments);
+        const safeAppointments = appointmentsListResponseSchema.parse(appointments);
+
+        return response.json(safeAppointments);
     }
 
-    
+
 }

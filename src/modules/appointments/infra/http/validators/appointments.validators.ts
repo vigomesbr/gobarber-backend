@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import Appointment from '../../typeorm/entities/Appointment';
+import { userResponseSchema } from '@modules/users/infra/http/validators/users.validators';
 
 export const createAppointmentBodySchema = z.object({
   provider_id: z.string().uuid({ message: 'Invalid provider ID format.' }),
@@ -27,3 +29,15 @@ export const listProviderAppointmentsQuerySchema = z.object({
 export type ListProviderAppointmentsQuery = z.infer<
   typeof listProviderAppointmentsQuerySchema
 >;
+
+export const appointmentResponseSchema = z.object({
+  id: z.string(),
+  date: z.coerce.date(),
+  //provider: userResponseSchema,
+  user: userResponseSchema,
+});
+
+export const appointmentsListResponseSchema = z.array(appointmentResponseSchema);
+
+export type AppointmentResponse = z.infer<typeof appointmentResponseSchema>;
+export type AppointmentsListResponse = z.infer<typeof appointmentsListResponseSchema>;
