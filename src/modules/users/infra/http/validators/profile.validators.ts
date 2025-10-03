@@ -9,16 +9,13 @@ export const updateProfileBodySchema = z
   })
   .refine(
     data => {
-      // Se 'password' foi fornecido, 'old_password' também deve ser.
       if (data.password && !data.old_password) {
-        return false; // Retornar false aciona o erro de validação
+        return false; 
       }
       return true;
     },
     {
-      // Mensagem de erro customizada para esta validação específica
       message: 'Old password is required to set a new password.',
-      // O erro será associado ao campo 'old_password'
       path: ['old_password'],
     },
   );
